@@ -1,0 +1,36 @@
+# --> (Optional) Change log level and format here ...
+#     - level: [TRACE, DEBUG, INFO, WARN, ERROR, FATAL]
+log:
+  level: DEBUG
+# <--
+
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+  traefik:
+    address: ":7777"
+# -- Configure your CertificateResolver here...
+certificatesResolvers:
+  cloudflare:
+    acme:
+      email: bertil974@msn.com  # <-- Change this to your email
+      storage: /var/traefik/certs/cloudflare-acme.json
+      caServer: "https://acme-v02.api.letsencrypt.org/directory"
+      dnsChallenge:
+        provider: cloudflare  # <-- (Optional) Change this to your DNS provider
+        resolvers:
+          - "1.1.1.1:53"
+          - "8.8.8.8:53"
+providers:
+  docker:
+    defaultRule: "Host(`{{ trimPrefix `/` .Name }}.docker.lo`)"
+api:
+  insecure: true
+http:
+  serversTransports:
+    mytransport:
+      forwardingTimeouts:
+        dialTimeout: "3s"
