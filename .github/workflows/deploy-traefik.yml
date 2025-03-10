@@ -11,6 +11,9 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+      
+      - name: Debug VPS_IP
+        run: echo "VPS_IP=${{ secrets.VPS_IP }}"
 
       - name: Setup SSH
         run: |
