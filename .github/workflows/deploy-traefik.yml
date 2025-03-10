@@ -32,7 +32,7 @@ jobs:
           mkdir -p /home/traefik && cd /home/traefik
 
           # Télécharger le dernier docker-compose.yml
-          curl -o docker-compose.yml https://raw.githubusercontent.com/https://github.com/j-b974/Treafik/main/docker-compose.yml
+          curl -o docker-compose.yaml https://raw.githubusercontent.com/j-b974/Treafik/main/docker-compose.yaml
 
           # Vérifier la config
           docker compose config
