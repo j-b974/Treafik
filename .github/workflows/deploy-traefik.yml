@@ -25,26 +25,18 @@ jobs:
 
       - name: Deploy Traefik on VPS
         run: |
-          ssh -i ~/.ssh/id_ed25519 ${{ secrets.VPS_SSH_USER }}@${{ secrets.VPS_IP }} << 'EOF'
-          set -e  # Stop if an error occurs
-
-          # Aller dans le dossier de Traefik (ou le créer)
-          mkdir -p /home/traefik && cd /home/traefik
-
-          # Télécharger le dernier docker-compose.yml
-          curl -o docker-compose.yaml https://raw.githubusercontent.com/j-b974/Treafik/main/docker-compose.yaml
-
-          # Vérifier la config
-          docker compose config
-
-          # Arrêter et supprimer le service Traefik
-          docker compose down
-
-          # Mettre à jour les images Docker
-          docker compose pull
-
-          # Relancer Traefik
-          docker compose up -d
-
-          echo "✅ Traefik redémarré avec succès !"
-          EOF
+          ssh -i ~/.ssh/id_ed25519 ${{ secrets.VPS_SSH_USER }}@${{ secrets.VPS_IP }} "
+            if [-d /home/traefik]; then
+              cd /home/traefik && git pull origin main
+            else
+              git clone depth==1 https://github.com/j-b974/Treafik.git
+            fi
+          "
+      - name: Redemarre Traefik avec Docker
+        run: |
+          ssh -i ~/.ssh/id_ed25519 ${{ secrets.VPS_SSH_USER }}@${{ secrets.VPS_IP }}"
+            cd /home/traefik
+            echo "CF_DNS_API_TOKEN=${{ secrets.API_KEY_CLOUDFLARE}}" >> .env
+            docker-compose down
+            docker-compose up -d
+          "
