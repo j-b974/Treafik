@@ -29,7 +29,7 @@ jobs:
             if [-d /home/traefik]; then
               cd /home/traefik && git pull origin main
             else
-              git clone depth==1 https://github.com/j-b974/Treafik.git
+              git clone --depth==1 https://github.com/j-b974/Treafik.git
             fi
           "
       - name: Redemarre Traefik avec Docker
